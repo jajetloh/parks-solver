@@ -26,6 +26,23 @@ export class HomeComponent implements OnInit {
     @ViewChild('boardRef') boardRef: any
 
     presetBoards: {[k: string]: number[][]} = {
+        '6x6 L2-1': [
+            [2,2,1,1,1,1],
+            [2,2,1,1,1,1],
+            [0,2,2,2,2,4],
+            [0,2,2,3,4,4],
+            [0,0,0,3,4,5],
+            [0,0,4,4,4,5],
+        ],
+        '7x7 Pathologic': [
+            [0,0,0,0,4,0,0],
+            [0,0,2,0,4,0,0],
+            [1,0,2,0,4,5,5],
+            [1,0,0,0,4,5,6],
+            [1,3,3,3,5,5,6],
+            [1,1,0,0,0,6,6],
+            [1,1,0,0,0,0,0],
+        ],
         '8x8 Test': [
             [0,1,1,1,1,2,2,3],
             [0,1,4,4,4,5,2,3],
@@ -36,14 +53,16 @@ export class HomeComponent implements OnInit {
             [6,4,4,4,4,4,5,7],
             [6,6,4,4,7,7,7,7],
         ],
-        '7x7 Pathologic': [
-            [0,0,0,0,4,0,0],
-            [0,0,2,0,4,0,0],
-            [1,0,2,0,4,5,5],
-            [1,0,0,0,4,5,6],
-            [1,3,3,3,5,5,6],
-            [1,1,0,0,0,6,6],
-            [1,1,0,0,0,0,0],
+        '9x9 L5-1': [
+            [8,8,8,8,8,1,5,5,2],
+            [8,7,7,7,1,1,5,5,2],
+            [8,8,8,8,8,1,5,2,2],
+            [0,8,8,8,8,1,5,5,2],
+            [0,0,0,0,0,1,3,3,2],
+            [0,0,0,4,4,1,3,3,3],
+            [0,0,6,4,3,1,3,3,3],
+            [0,6,6,4,3,1,3,3,3],
+            [0,6,6,4,3,3,3,3,3],
         ],
         '11x11 L7-19': [
             [5,5,0,0,1,1,1,7,7,7,7],
@@ -115,7 +134,7 @@ export class HomeComponent implements OnInit {
 
     onBoardSizeChange() {
         this.boardSizeIter = this.range(this.boardSize)
-        this.board = [...this.board.map(row => [...row, 0].slice(0, this.boardSize)), this.range(this.boardSize).map(i => 0)].slice(0, this.boardSize)
+        this.board = [...this.board.map(row => [...row, ...this.range(this.boardSize).map(x => 0)].slice(0, this.boardSize)), ...this.range(this.boardSize).map(x => this.range(this.boardSize).map(i => 0))].slice(0, this.boardSize)
     }
 
 
