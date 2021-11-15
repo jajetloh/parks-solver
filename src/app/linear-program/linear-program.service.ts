@@ -22,14 +22,12 @@ export class LinearProgramService implements OnInit {
 
     private async loadHighs() {
         this.highs = await highs_loader({})
-
-        console.log('1!!!')
     }
 
     ngOnInit() {
     }
 
-    solveBoard(board: number[][]) {
+    solveBoard(board: number[][]): SolveResult<number[][]> {
         this.lpFactory.reset()
         const boardSize = board.length
         for (const x of range(boardSize)) {
@@ -76,16 +74,24 @@ export class LinearProgramService implements OnInit {
 
         const lpString = this.lpFactory.compile()
 
-        const highsResult = this.highs.solve(lpString)
+        const highsResult: { Status: string, Columns: any, Rows: any } = this.highs.solve(lpString)
 
-        const result = Object.entries(highsResult.Columns)
-            .filter(([k,v]) => (v as any).Primal === 1)
-            .map(([k,v]) => [Number(k.split('_')[1]), Number(k.split('_')[2])])
-        console.log(result)
-        return result
+        if (highsResult.Status === 'Optimal') {
+            const result = Object.entries(highsResult.Columns)
+                .filter(([k,v]) => (v as any).Primal === 1)
+                .map(([k,v]) => [Number(k.split('_')[1]), Number(k.split('_')[2])])
+            return { status: 'Success', result }
+        } else {
+            return { status: 'Fail', result: null }
+        }
     }
 }
 
 function range(n: number): number[] {
     return Object.keys([...new Array(n)]).map(x => Number(x))
+}
+
+export interface SolveResult<T> {
+    status: 'Success' | 'Fail'
+    result: T | null
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core'
-import { LinearProgramService } from "../linear-program/linear-program.service"
+import { LinearProgramService, SolveResult } from "../linear-program/linear-program.service"
 
 enum CellColour {
     Green = 'green',
@@ -75,6 +75,8 @@ export class HomeComponent implements OnInit {
     colours = Object.values(CellColour)
     selectedColourIndex = 0
 
+    statusMessage: { show: boolean, message: string, class: string } = { show: false, message: '', class: '' }
+
     constructor(
         private lpService: LinearProgramService,
     ) {
@@ -85,18 +87,24 @@ export class HomeComponent implements OnInit {
 
     submitBoard() {
         this.resetHighlights()
-        const result: number[][] = this.lpService.solveBoard(this.board)
-        this.result = result
-        const resultSequence: number[] = []
-        for (const i of result) {
-            resultSequence.push(i[0] * this.boardSize + i[1])
+        const solveResult: SolveResult<number[][]> = this.lpService.solveBoard(this.board)
+
+        if (solveResult.status === 'Success') {
+            this.result = solveResult.result
+            const resultSequence: number[] = []
+            for (const i of this.result) {
+                resultSequence.push(i[0] * this.boardSize + i[1])
+            }
+            (new Array(...this.boardRef.nativeElement.firstElementChild.children))
+                .filter((e: any, i: number) => resultSequence.includes(i))
+                .forEach((e: any) => {
+                    e.style['stroke'] = 'black'
+                    e.style['stroke-width'] = 5
+                })
+            this.statusMessage = { show: true, message: 'Board successfully solved.', class: 'text-success' }
+        } else {
+            this.statusMessage = { show: true, message: 'No solution found.', class: 'text-danger' }
         }
-        (new Array(...this.boardRef.nativeElement.firstElementChild.children))
-            .filter((e: any, i: number) => resultSequence.includes(i))
-            .forEach((e: any) => {
-                e.style['stroke'] = 'black'
-                e.style['stroke-width'] = 5
-            })
     }
 
     range(n: number): number[] {
