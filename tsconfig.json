@@ -19,7 +19,13 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "path": ["./node_modules/path-browserify"],
+      "crypto": ["./node_modules/crypto-browserify"],
+      "fs": ["./node_modules/browserify-fs"],
+      "stream": ["./node_modules/stream-browserify"]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
