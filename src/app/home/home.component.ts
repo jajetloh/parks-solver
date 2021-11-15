@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core'
 import { LinearProgramService, SolveResult } from "../linear-program/linear-program.service"
+import { cloneDeep } from 'lodash-es'
 
 enum CellColour {
     Green = 'green',
@@ -69,6 +70,7 @@ export class HomeComponent implements OnInit {
     boardSizeIter: number[] = this.range(this.boardSize)
     cellSize: number = 50
     paddingSize: number = 10
+    borderPad: number = 10
 
     board: number[][] = this.range(this.boardSize).map(i => this.range(this.boardSize).map(j => 0))
 
@@ -147,16 +149,13 @@ export class HomeComponent implements OnInit {
     async usePreset(presetName: string) {
 
         this.resetHighlights()
-        this.board = this.presetBoards[presetName]
-        this.boardSize = this.presetBoards[presetName].length
+        this.board = cloneDeep(this.presetBoards[presetName])
+        this.boardSize = this.board.length
         this.boardSizeIter = this.range(this.boardSize)
 
-        console.log(this.boardSizeIter)
-
+        // Timeout to avoid race condition where DOM has not updated yet before colour styling is applied
         setTimeout(() => {
             const cellRefs = this.boardRef.nativeElement.children[0].children
-
-            console.log(cellRefs.length)
 
             this.board.forEach((row, x) => {
                 row.forEach((colourNumber, y) => {

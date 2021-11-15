@@ -15,11 +15,11 @@
                 </form>
             </div>
 
-            <div class="mb-5">
-                <svg width="700" height="50" role="img">
+            <div class="mb-5 d-flex justify-content-center">
+                <svg width="800" height="70" role="img">
                     <g>
                         <ng-container *ngFor="let i of boardSizeIter">
-                            <rect (click)="onColourClick(i)" [attr.x]="i * (cellSize + paddingSize)" [attr.y]="0" [attr.width]="cellSize" [attr.height]="cellSize" [style]="'fill: ' + colours[i] + '; stroke: ' + (i === selectedColourIndex ? 'black' : 'null') + '; stroke-width: ' + (i === selectedColourIndex ? 5 : 0)"></rect>
+                            <rect (click)="onColourClick(i)" class="c-cursor-pointer" [attr.x]="borderPad + i * (cellSize + paddingSize)" [attr.y]="borderPad" [attr.width]="cellSize" [attr.height]="cellSize" [style]="'fill: ' + colours[i] + '; stroke: ' + (i === selectedColourIndex ? 'black' : 'null') + '; stroke-width: ' + (i === selectedColourIndex ? 5 : 0)"></rect>
                         </ng-container>
                     </g>
                 </svg>
@@ -30,10 +30,11 @@
                     <g>
                         <ng-container *ngFor="let i of boardSizeIter">
                             <ng-container *ngFor="let j of boardSizeIter">
-                                <rect (mouseenter)="onCellMouseEnter(i, j, $event)"
+                                <rect class="c-cursor-pointer"
+                                      (mouseenter)="onCellMouseEnter(i, j, $event)"
                                       (mousedown)="onCellMouseDown(i, j, $event)"
-                                      [attr.x]="j * (cellSize + paddingSize)"
-                                      [attr.y]="i * (cellSize + paddingSize)"
+                                      [attr.x]="borderPad + j * (cellSize + paddingSize)"
+                                      [attr.y]="borderPad + i * (cellSize + paddingSize)"
                                       [attr.width]="cellSize"
                                       [attr.height]="cellSize" style="fill: green"></rect>
                             </ng-container>
@@ -43,7 +44,7 @@
             </div>
             <div>
                 <button class="btn btn-primary" (click)="submitBoard()">Solve Board</button>
-                <span *ngIf="statusMessage.show" class="ml-3" [ngClass]="statusMessage.class" style="cursor: pointer" (click)="statusMessage.show = false"><b>×</b> {{ statusMessage.message }}</span>
+                <span *ngIf="statusMessage.show" class="ml-3 c-cursor-pointer" [ngClass]="statusMessage.class" (click)="statusMessage.show = false"><b>×</b> {{ statusMessage.message }}</span>
             </div>
         </div>
     </div>
