@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild } from '@angular/core'
-import { BackendApiService } from "../backend-api.service"
 import { LinearProgramService } from "../linear-program/linear-program.service"
 
 enum CellColour {
@@ -77,7 +76,6 @@ export class HomeComponent implements OnInit {
     selectedColourIndex = 0
 
     constructor(
-        private apiService: BackendApiService,
         private lpService: LinearProgramService,
     ) {
     }
