@@ -1,7 +1,7 @@
 import { Injectable, OnInit } from '@angular/core'
 // @ts-ignore
-import * as highs_loader from 'highs'
 import { LPExpression, LPFactory } from "./linear-program-factory"
+import highsLoader from "highs"
 
 @Injectable({
     providedIn: 'root'
@@ -13,15 +13,11 @@ export class LinearProgramService implements OnInit {
     lpFactory = new LPFactory()
 
     constructor() {
-        this.ready = new Promise<any>((resolve, reject) => {
-            this.loadHighs().then(result => {
-                resolve(result)
-            }).catch(e => reject(e))
-        })
+        this.ready = new Promise<any>(() => this.loadHighs())
     }
 
     private async loadHighs() {
-        this.highs = await highs_loader({})
+        this.highs = await highsLoader({})
     }
 
     ngOnInit() {
