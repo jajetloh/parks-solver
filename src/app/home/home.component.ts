@@ -96,6 +96,8 @@ export class HomeComponent implements OnInit {
     colours = Object.values(CellColour)
     selectedColourIndex = 0
 
+    minPageContentWidth = this.colours.length * (this.cellSize + this.paddingSize + 1)
+
     statusMessage: { show: boolean, message: string, class: string } = { show: false, message: '', class: '' }
 
     constructor(
