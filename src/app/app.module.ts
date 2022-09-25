@@ -6,6 +6,7 @@ import { HomeComponent } from './home/home.component'
 import { HttpClientModule } from "@angular/common/http"
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
 import { FormsModule, ReactiveFormsModule } from "@angular/forms"
+import { FontAwesomeModule } from "@fortawesome/angular-fontawesome"
 
 @NgModule({
     declarations: [
@@ -18,6 +19,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms"
         NgbModule,
         FormsModule,
         ReactiveFormsModule,
+        FontAwesomeModule,
     ],
     providers: [
         {

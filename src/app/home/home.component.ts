@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core'
 import { LinearProgramService, SolveResult } from "../linear-program/linear-program.service"
 import { cloneDeep } from 'lodash-es'
+import { faCaretDown, faCaretRight } from '@fortawesome/free-solid-svg-icons'
 
 enum CellColour {
     Green = 'green',
@@ -99,6 +100,12 @@ export class HomeComponent implements OnInit {
     minPageContentWidth = this.colours.length * (this.cellSize + this.paddingSize + 1)
 
     statusMessage: { show: boolean, message: string, class: string } = { show: false, message: '', class: '' }
+
+    expandHelp = true
+    expandHow = false
+
+    faCaretDown = faCaretDown
+    faCaretRight = faCaretRight
 
     constructor(
         private lpService: LinearProgramService,

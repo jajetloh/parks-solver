@@ -3,6 +3,35 @@
     <div class="col-sm-10 col-md-8 col-lg-8 col-xl-6" [style.min-width.px]="minPageContentWidth">
         <h1 class="border-primary border-bottom text-primary">Parks Solver</h1>
         <div>
+            <h3 class="text-secondary c-cursor-pointer" (click)="expandHelp = !expandHelp"><fa-icon [icon]="expandHelp ? faCaretDown : faCaretRight" style="margin-right: 8px"></fa-icon><span>Help</span></h3>
+            <div *ngIf="expandHelp">
+                <p>This is a solver for the <a href="https://www.xymene.com/" target="_blank"><b>Parks Puzzle</b></a> game (available for Android, Windows Phone and Kindle).</p>
+                <b>Rules of the game</b>
+                <ul>
+                    <li>The aim of the game is to place trees in cells in a square grid, such that:</li>
+                    <ul>
+                        <li>Each row and column have the same number of trees</li>
+                        <li>Each colour has the same number of trees</li>
+                        <li>No trees are horizontally, vertically or diagonally adjacent to another tree</li>
+                    </ul>
+                    <li>For board sizes <b>5 to 8</b>, there is <b>1 tree per row, column and colour</b></li>
+                    <li>For board sizes <b>9 to 11</b>, there are <b>2 trees per row, column and colour</b></li>
+                </ul>
+                <b>How to use the solver</b>
+                <ol>
+                    <li>Set up the board. You can do this yourself by following the next sub-steps, or use a pre-defined board by selecting from Preset Boards, then clicking Load Preset.</li>
+                    <ol>
+                        <li>Select the appropriate board size</li>
+                        <li>Click on a colour in the top row to select it</li>
+                        <li>Click and drag on squares in the grid to fill with the selected colour</li>
+                    </ol>
+                    <li>When the board is ready, click <b>Solve Board</b></li>
+                    <li>If successful, the marked cells in the grid denote cells with trees. If unsuccessful, the given grid has no possible solutions.</li>
+                </ol>
+            </div>
+        </div>
+        <div>
+            <h3 class="text-secondary">Solver</h3>
             <div class="row align-items-end">
                 <div class="col">
                     <label for="boardSizeEl">Board Size</label>
@@ -47,6 +76,16 @@
             <div class="d-flex justify-content-between">
                 <button class="btn btn-primary" (click)="submitBoard()">Solve Board</button>
                 <span *ngIf="statusMessage.show" (keyup.enter)="statusMessage.show = false" tabindex=0 class="ml-3 c-cursor-pointer" [ngClass]="statusMessage.class" (click)="statusMessage.show = false"><b>×</b> {{ statusMessage.message }}</span>
+            </div>
+        </div>
+        <div class="mt-3">
+            <h3 class="text-secondary c-cursor-pointer" (click)="expandHow = !expandHow"><fa-icon [icon]="expandHow ? faCaretDown : faCaretRight" style="margin-right: 8px"></fa-icon><span>How does this work?</span></h3>
+            <div *ngIf="expandHow">
+                <p>This solver works by framing the problem as an <a href="https://en.wikipedia.org/wiki/Integer_programming" target="_blank">Integer Programming</a> problem. Many libraries exist for solving such problems, with this solver using <a href="https://www.npmjs.com/package/highs" target="_blank">HiGHS JS</a>.</p>
+
+                <p>The grid is used to define constraints in the Integer Programming problem. For example, one constraint will enforce that the total number of light blue cells with trees is 1 or 2 (depending on the board size). A complete list of constraints is then formatted as an LP file (a specially formatted text file), and is passed to the HiGHS library to solve. The solution returned (if any) is then displayed.</p>
+
+                <p>Boards may have more than one solution, but only a single solution is shown (unless the board has no solutions).</p>
             </div>
         </div>
     </div>
